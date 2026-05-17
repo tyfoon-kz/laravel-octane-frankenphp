@@ -22,8 +22,17 @@ Main fields:
 - `attribute_group_id`
 - `name`
 - `code`
+- `type`
 - `sort_order`
 - timestamps
+
+Allowed `type` values:
+
+- `string`
+- `integer`
+- `decimal`
+- `boolean`
+- `text`
 
 `Attribute` is not the same as `AttributeValue`. The attribute "Power" is the definition. The value "1800 W" belongs to a concrete product.
 
@@ -36,8 +45,22 @@ Main fields:
 - `id`
 - `product_id`
 - `attribute_id`
-- `value`
+- `value_string`
+- `value_integer`
+- `value_decimal`
+- `value_boolean`
+- `value_text`
 - timestamps
+
+Only one value column should be used according to the attribute type. For example, "Power" with type `integer` uses `value_integer`, while "Body material" with type `string` uses `value_string`. This prevents the project from mixing human text, numeric values, booleans, and long descriptions in one ambiguous column.
+
+## Typed Value Examples
+
+- Power: `integer`, stored in `value_integer`.
+- Capacity: `decimal`, stored in `value_decimal`.
+- Body material: `string`, stored in `value_string`.
+- Auto shut-off: `boolean`, stored in `value_boolean`.
+- Product note: `text`, stored in `value_text`.
 
 ## Examples
 
