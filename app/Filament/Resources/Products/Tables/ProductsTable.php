@@ -2,8 +2,14 @@
 
 namespace App\Filament\Resources\Products\Tables;
 
+use App\Catalog\Application\Products\PublishProductCommand;
+use App\Catalog\Application\Products\PublishProductService;
+use App\Catalog\Domain\Products\ProductCannotBePublished;
+use App\Models\Product;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -30,6 +36,29 @@ class ProductsTable
                 TernaryFilter::make('is_active'),
             ])
             ->recordActions([
+                Action::make('publish')
+                    ->label('Publish')
+                    ->requiresConfirmation()
+                    ->visible(fn (Product $record): bool => $record->status !== 'published')
+                    ->action(function (Product $record, PublishProductService $publishProduct): void {
+                        try {
+                            $publishProduct->handle(new PublishProductCommand(
+                                productId: $record->id,
+                                actorId: (int) auth()->id(),
+                            ));
+
+                            Notification::make()
+                                ->title('Product published')
+                                ->success()
+                                ->send();
+                        } catch (ProductCannotBePublished $exception) {
+                            Notification::make()
+                                ->title('Product cannot be published')
+                                ->body($exception->getMessage())
+                                ->danger()
+                                ->send();
+                        }
+                    }),
                 EditAction::make(),
                 DeleteAction::make()->requiresConfirmation(),
             ])
