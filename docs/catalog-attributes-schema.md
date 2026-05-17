@@ -62,6 +62,42 @@ Only one value column should be used according to the attribute type. For exampl
 - Auto shut-off: `boolean`, stored in `value_boolean`.
 - Product note: `text`, stored in `value_text`.
 
+## Category Attributes
+
+`category_attributes` connects existing `categories` with reusable `attributes`. It is not only a technical pivot table. It records a business decision: a category defines which attributes are available for its products, which of them are required, which can be used in filters, and in which order they should be shown.
+
+Main fields:
+
+- `id`
+- `category_id`
+- `attribute_id`
+- `is_required`
+- `is_filterable`
+- `sort_order`
+- timestamps
+
+Requiredness belongs to this relation. The same attribute can be required for one category and optional for another category.
+
+## Category Examples
+
+Refrigerators:
+
+| Attribute | Required | Filterable | Order |
+| --- | --- | --- | --- |
+| Volume | yes | yes | 10 |
+| Energy class | yes | yes | 20 |
+| Chamber count | no | yes | 30 |
+
+Kettles:
+
+| Attribute | Required | Filterable | Order |
+| --- | --- | --- | --- |
+| Power | yes | yes | 10 |
+| Capacity | yes | yes | 20 |
+| Auto shut-off | no | yes | 30 |
+
+This relation appears after `attributes` because the project first needs reusable attribute definitions. Category settings then decide how those definitions behave for each category.
+
 ## Examples
 
 Refrigerator:
