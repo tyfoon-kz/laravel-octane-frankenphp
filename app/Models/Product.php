@@ -54,4 +54,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductAudit::class);
     }
+
+    public function attributeValues(): HasMany
+    {
+        return $this->hasMany(AttributeValue::class);
+    }
 }

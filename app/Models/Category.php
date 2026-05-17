@@ -21,4 +21,9 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function categoryAttributes(): HasMany
+    {
+        return $this->hasMany(CategoryAttribute::class)->orderBy('sort_order');
+    }
 }
