@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductApiController;
 use App\Http\Controllers\ProductAssetController;
+use App\Http\Controllers\ProductPublicationController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -34,6 +35,7 @@ Route::get('/catalog/cache-summary', function () {
 });
 
 Route::middleware(['auth', 'throttle:products-api'])->prefix('api')->group(function () {
+    Route::post('products/{product}/publish', ProductPublicationController::class)->name('products.publish');
     Route::apiResource('products', ProductApiController::class);
     Route::post('products/{product}/asset', [ProductAssetController::class, 'store']);
 });
