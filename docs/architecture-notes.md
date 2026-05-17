@@ -37,3 +37,9 @@ The first business focus is the product catalog. The company sells different kin
 `products` require DDD-lite in the publication scenario. Creating or editing a draft product can still look like CRUD, but publishing a product protects catalog quality and must check required category attributes deeper than a controller, request, or Filament form.
 
 The decision is not "DDD is always better". The decision is narrower: keep simple CRUD where the business meaning is simple, and introduce DDD-lite where a rule can be bypassed through multiple entry points.
+
+## Transaction Boundary For Publication
+
+Product publication changes more than one technical detail. The use case loads the product, checks required category attributes, changes publication state, saves the result, and records an audit event. These steps should succeed or fail as one scenario.
+
+The transaction belongs to the application boundary, not to the domain object. The domain object decides whether publication is allowed. Laravel's `DB::transaction` belongs to infrastructure. `PublishProductService` connects those concerns through a small `TransactionManager` contract so the rule stays testable and the database mechanism stays outside the domain model.

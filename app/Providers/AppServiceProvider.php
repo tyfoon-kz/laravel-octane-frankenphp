@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Catalog\Application\Support\TransactionManager;
 use App\Catalog\Domain\Products\ProductRepository;
 use App\Catalog\Infrastructure\Eloquent\EloquentProductRepository;
+use App\Catalog\Infrastructure\Laravel\LaravelTransactionManager;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(ProductRepository::class, EloquentProductRepository::class);
+        $this->app->bind(TransactionManager::class, LaravelTransactionManager::class);
     }
 
     /**
