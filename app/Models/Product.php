@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'price',
     'stock',
     'is_active',
+    'status',
     'image_path',
     'search_indexed_at',
 ])]
@@ -31,6 +32,7 @@ class Product extends Model
             'price' => 'decimal:2',
             'stock' => 'integer',
             'is_active' => 'boolean',
+            'status' => 'string',
             'search_indexed_at' => 'datetime',
         ];
     }
