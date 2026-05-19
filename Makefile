@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -34,3 +34,6 @@ diff-check: ## Check whitespace errors in git diff
 
 benchmark-baseline: ## Measure baseline HTTP routes before Octane
 	bash scripts/benchmark-baseline.sh
+
+bootstrap-cost: ## Compare light and database routes in the classic lifecycle
+	bash scripts/benchmark-bootstrap-cost.sh

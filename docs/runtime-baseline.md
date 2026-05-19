@@ -44,11 +44,17 @@ curl -i http://127.0.0.1:8000/up
 - Без миграций routes, которые ходят в базу, могут падать или возвращать неожиданный результат.
 
 
-## Baseline Benchmark
+## FPM Bootstrap Comparison
 
 ```bash
-make benchmark-baseline
+make bootstrap-cost
 ```
 
-The benchmark target measures cheap HTTP routes and one feature-test slice.
-It is intentionally small because the goal is reproducibility before Octane, not a production-grade load test.
+Routes used for comparison:
+
+- `/dev/runtime/light` does almost no application work.
+- `/dev/runtime/products-count` touches the database through Eloquent.
+- `/catalog/cache-summary` goes through application state and cache.
+
+Do not read this as proof that one route is better than another.
+The point is to see that repeated Laravel bootstrap, database work and cache work are different layers.

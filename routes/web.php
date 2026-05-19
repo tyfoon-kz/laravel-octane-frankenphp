@@ -6,7 +6,9 @@ use App\Http\Controllers\ProductPublicationController;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return response()->json([
@@ -33,6 +35,28 @@ Route::get('/catalog/cache-summary', function () {
         'total_products' => Product::count(),
     ]);
 });
+
+if (app()->environment(['local', 'testing'])) {
+
+    Route::prefix('dev/runtime')->group(function () {
+        Route::get('light', fn () => response()->json([
+            'ok' => true,
+            'pid' => getmypid(),
+            'timestamp' => now()->toISOString(),
+        ]));
+
+        Route::get('products-count', fn () => response()->json([
+            'products' => Product::count(),
+            'pid' => getmypid(),
+        ]));
+
+        Route::get('db-ping', fn () => response()->json([
+            'connection' => config('database.default'),
+            'result' => DB::select('select 1 as ok')[0]->ok ?? 1,
+            'pid' => getmypid(),
+        ]));
+    });
+}
 
 Route::middleware(['auth', 'throttle:products-api'])->prefix('api')->group(function () {
     Route::post('products/{product}/publish', ProductPublicationController::class)->name('products.publish');
