@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Support\Runtime\WorkerMemoryCounter;
 use App\Support\Runtime\RequestStateLeakProbe;
+use App\Support\Runtime\RequestContext;
 
 Route::get('/', function () {
     return response()->json([
@@ -86,6 +87,11 @@ if (app()->environment(['local', 'testing'])) {
         });
 
 
+
+        Route::get('request-context', fn (RequestContext $context) => response()->json([
+            'request_id' => $context->requestId(),
+            'pid' => getmypid(),
+        ]));
 
 
 
