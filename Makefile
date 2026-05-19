@@ -1,7 +1,7 @@
 .PHONY: help install test check qa migrate migrate-status build diff-check
 
 help: ## Show available project commands
-	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-18s %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
 
 install: ## Install PHP and frontend dependencies
 	composer install
