@@ -5,8 +5,15 @@ It is a safe artificial demo, not an application feature.
 
 ```bash
 make memory-leak-demo
+make octane-status
 ```
 
-Under FPM the process boundary often hides this kind of mistake.
-Under a long-running worker, the retained reference can accumulate until workers are recycled or the process is restarted.
-Recycling workers is a mitigation; removing the retained reference is the real fix.
+Useful readings:
+
+- `items_retained` shows whether the demo keeps references.
+- `memory_usage_bytes` shows current allocated memory for the PHP process.
+- `memory_peak_bytes` shows the highest observed memory usage.
+- Octane logs and container status show whether workers are being restarted.
+
+Warm-up memory growth is not automatically a leak.
+A leak is suspicious when memory keeps growing with repeated similar requests and does not stabilize.
