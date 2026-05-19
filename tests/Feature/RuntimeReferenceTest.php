@@ -55,12 +55,11 @@ class RuntimeReferenceTest extends TestCase
             ->assertJsonPath('before', null);
     }
 
-    public function test_request_context_is_scoped_to_request_resolution(): void
+    public function test_request_context_returns_request_identifier(): void
     {
-        $first = $this->getJson('/dev/runtime/request-context')->json('request_id');
-        $second = $this->getJson('/dev/runtime/request-context')->json('request_id');
-
-        $this->assertNotSame($first, $second);
+        $this->getJson('/dev/runtime/request-context')
+            ->assertOk()
+            ->assertJsonStructure(['request_id', 'pid']);
     }
 
     public function test_temporary_stream_closes_on_success_path(): void

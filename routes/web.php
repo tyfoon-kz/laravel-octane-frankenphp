@@ -8,11 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
-use App\Support\Runtime\WorkerMemoryCounter;
-use App\Support\Runtime\RequestStateLeakProbe;
 use App\Support\Runtime\RequestContext;
+use App\Support\Runtime\RequestStateLeakProbe;
 use App\Support\Runtime\TemporaryStreamExample;
+use App\Support\Runtime\WorkerMemoryCounter;
 use App\Support\Runtime\IntentionalMemoryLeakProbe;
 
 Route::get('/', function () {
@@ -80,11 +79,11 @@ if (app()->environment(['local', 'testing'])) {
             return response()->json(['reset' => true]);
         });
 
-        Route::get('static-leak/unsafe/{marker?}', function (?string $marker, RequestStateLeakProbe $probe) {
+        Route::get('static-leak/unsafe/{marker?}', function (RequestStateLeakProbe $probe, ?string $marker = null) {
             return response()->json($probe->rememberUnsafe($marker));
         });
 
-        Route::get('static-leak/safe/{marker?}', function (?string $marker, RequestStateLeakProbe $probe) {
+        Route::get('static-leak/safe/{marker?}', function (RequestStateLeakProbe $probe, ?string $marker = null) {
             return response()->json($probe->rememberSafely($marker));
         });
 
