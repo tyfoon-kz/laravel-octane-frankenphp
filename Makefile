@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -49,3 +49,6 @@ octane-logs: ## Follow FrankenPHP/Octane logs
 
 octane-reload: ## Reload Octane workers after code or config changes
 	php artisan octane:reload --server=frankenphp
+
+octane-watch: ## Start Octane in local watch mode
+	php artisan octane:start --server=frankenphp --host=127.0.0.1 --port=8000 --watch

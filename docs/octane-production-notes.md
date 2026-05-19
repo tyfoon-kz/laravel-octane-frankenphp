@@ -7,15 +7,13 @@ Octane меняет не Laravel как фреймворк, а жизненны�
 Поэтому production notes должны отвечать не только на вопрос "работает ли endpoint", но и на вопросы про reload, память, соединения, stale state, logs и smoke checks после deploy.
 
 
-## Local Octane Workflow
+## Watch Mode
 
 ```bash
-make octane-up
-make octane-logs
-make octane-reload
-make octane-down
+make octane-watch
+npm run watch
 ```
 
-The course chooses FrankenPHP as the Octane server driver.
-FrankenPHP is one way to run a long-running PHP worker lifecycle; it is not the only possible runtime model.
-The important idea is that Laravel can be bootstrapped once and then reused by workers.
+Watch mode is a development convenience.
+It observes code paths and reloads workers when files change.
+It is not a production deploy strategy because production should use explicit build, reload, smoke and logs.
