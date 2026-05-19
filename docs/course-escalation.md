@@ -1,46 +1,25 @@
 # Course Escalation
 
-This repository is not a greenfield Laravel project.
+This course continues from an already working Laravel catalog application.
+The previous project taught Laravel structure, database work, admin CRUD, tests and architectural separation.
+This course changes the runtime question.
 
-It is the starting reference repository for the Laravel Business DDD course. The baseline was imported from the final project of the previous course:
-
-```text
-source repository: php-to-enterprise-crud
-source branch: homework-15-07-final-project
-source commit: 05083d1a3cc9f93e3884834b6ce760df0e1f08d4
-target repository: git@github.com:tyfoon-kz/laravel-business-ddd.git
-```
-
-The import was created from Git object history through `git archive`, so local uncommitted changes in the previous repository are not part of this baseline.
-
-## Why the course starts here
-
-The previous course already built a working Laravel/Filament NSI application:
-
-- products;
-- categories;
-- suppliers;
-- units;
-- product audits;
-- API endpoints;
-- Filament resources;
-- policies;
-- events, jobs, mail and notifications;
-- tests.
-
-The DDD course uses that working CRUD system as material for refactoring and business modeling. The goal is not to create a clean project from nothing. The goal is to take an existing Laravel CRUD application, understand the business language behind it and evolve the product catalog toward a DDD-lite model.
-
-## Course direction
-
-The new course focuses on the catalog side of the existing system.
-
-Suppliers and units remain part of the inherited baseline, but the main implementation path adds flexible product characteristics:
+The main escalation is:
 
 ```text
-attribute_groups
-attributes
-attribute_values
-category_attributes
+Can the same Laravel application run safely when PHP does not forget everything after every request?
 ```
 
-This lets the course show a real business problem: different product categories need different characteristics, and the system should not add a new `products` column or a new Product class for every product type.
+The course does not present FrankenPHP as the only possible answer.
+FrankenPHP is used as a practical Octane driver for learning the long-running worker lifecycle.
+The engineering goal is to understand what changes when Laravel is bootstrapped once and reused across many requests:
+
+- process memory can survive a request;
+- static fields become dangerous for request-specific data;
+- singleton services need lifecycle review;
+- external connections and handles need cleanup strategy;
+- reload/restart becomes part of deploy;
+- benchmark results must be tied to a concrete bottleneck.
+
+The product catalog domain remains the same on purpose.
+The student can focus on runtime behavior instead of learning a new business model.

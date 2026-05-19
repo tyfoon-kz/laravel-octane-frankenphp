@@ -1,20 +1,18 @@
-# Laravel Business DDD Reference
+# Laravel Octane And FrankenPHP Reference
 
-This repository is the reference repository for the Laravel Business DDD course.
+This repository contains the reference implementation for the Laravel Octane and FrankenPHP course.
 
-It starts from the final reference solution of the previous PHP to Enterprise CRUD course and escalates that working Laravel/Filament CRUD project into a business-first DDD-lite learning path.
+The project starts from the finished Laravel catalog application from the previous architecture course and adds a runtime-focused learning path:
 
-Imported source:
-
-```text
-course: php-to-enterprise-crud
-branch: homework-15-07-final-project
-commit: 05083d1a3cc9f93e3884834b6ce760df0e1f08d4
-```
-
-The import is taken from Git history, not from the previous repository working tree.
-
-The Laravel 13 application lives in the repository root. It includes database sessions, database cache, database queues, Product NSI migrations, API endpoints, Filament 5 admin panel, policies, seed data, upload diagnostics, and feature tests.
+- baseline runtime checks before Octane;
+- repeatable Make targets for diagnostics;
+- Laravel Octane with FrankenPHP;
+- Docker Compose runtime workflow;
+- watch mode and frontend rebuild/reload flow;
+- long-running worker state demos;
+- static field, singleton, resource cleanup and memory diagnostics;
+- race condition and locking demonstrations;
+- benchmark notes, deploy smoke checks and production checklist.
 
 ## Quick Start
 
@@ -23,26 +21,22 @@ composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate:fresh --seed
-php artisan storage:link
-php artisan route:list
+npm install
+npm run build
 php artisan test
 ```
 
-Admin panel:
-
-- URL: `/admin`
-- Admin user: `admin@example.com` / `password`
-- Regular user: `operator@example.com` / `password`
-
-The `is_admin` flag is a beginner-friendly simplification for this course stage. Access is still checked on the server through `User::canAccessPanel()` and policies, not through hidden UI controls.
-
-## Useful Checks
+Useful runtime commands:
 
 ```bash
-php artisan route:list | grep admin
-php artisan queue:work --once
-curl -i http://localhost:8000/session/current
-curl -i http://localhost:8000/catalog/cache-summary
+make help
+make check
+make benchmark-baseline
+make octane-up
+make octane-logs
+make octane-reload
+make octane-down
 ```
 
-For production-like deployment, keep `APP_DEBUG=false`, run `php artisan config:cache`, `php artisan route:cache`, `php artisan view:cache`, `php artisan migrate --force`, `php artisan storage:link`, and supervise `php artisan queue:work`.
+The Octane commands use `docker-compose.octane.yml` and FrankenPHP as the Octane server driver.
+The regular Laravel application still lives in the repository root.
