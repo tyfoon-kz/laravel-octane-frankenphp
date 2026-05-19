@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo locking-demo
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -59,3 +59,6 @@ front: ## Build frontend assets and reload Octane workers
 
 race-demo: ## Run local lost update demonstration
 	php scripts/race-demo.php
+
+locking-demo: ## Run locked counter demonstration
+	php scripts/locking-tradeoff-demo.php
