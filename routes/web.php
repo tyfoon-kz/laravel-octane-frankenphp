@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Support\Runtime\WorkerMemoryCounter;
 use App\Support\Runtime\RequestStateLeakProbe;
 use App\Support\Runtime\RequestContext;
+use App\Support\Runtime\TemporaryStreamExample;
 
 Route::get('/', function () {
     return response()->json([
@@ -94,6 +95,10 @@ if (app()->environment(['local', 'testing'])) {
         ]));
 
 
+
+        Route::get('temporary-stream', function (Request $request, TemporaryStreamExample $example) {
+            return response()->json($example->run($request->boolean('fail')));
+        });
 
 
 
