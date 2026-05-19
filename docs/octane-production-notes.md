@@ -7,13 +7,12 @@ Octane меняет не Laravel как фреймворк, а жизненны�
 Поэтому production notes должны отвечать не только на вопрос "работает ли endpoint", но и на вопросы про reload, память, соединения, stale state, logs и smoke checks после deploy.
 
 
-## Watch Mode
+## Frontend Build And Runtime Reload
 
 ```bash
-make octane-watch
-npm run watch
+make front
 ```
 
-Watch mode is a development convenience.
-It observes code paths and reloads workers when files change.
-It is not a production deploy strategy because production should use explicit build, reload, smoke and logs.
+Vite writes a new manifest and hashed assets.
+A long-running runtime may still hold old application state, cached views or stale assumptions until workers are reloaded.
+The workflow is: build assets, reload/restart workers, then run smoke checks.
