@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo locking-demo
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo locking-demo memory-leak-demo
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -62,3 +62,6 @@ race-demo: ## Run local lost update demonstration
 
 locking-demo: ## Run locked counter demonstration
 	php scripts/locking-tradeoff-demo.php
+
+memory-leak-demo: ## Call local memory leak endpoint repeatedly
+	bash scripts/memory-leak-demo.sh

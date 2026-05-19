@@ -13,6 +13,7 @@ use App\Support\Runtime\WorkerMemoryCounter;
 use App\Support\Runtime\RequestStateLeakProbe;
 use App\Support\Runtime\RequestContext;
 use App\Support\Runtime\TemporaryStreamExample;
+use App\Support\Runtime\IntentionalMemoryLeakProbe;
 
 Route::get('/', function () {
     return response()->json([
@@ -101,6 +102,16 @@ if (app()->environment(['local', 'testing'])) {
         });
 
 
+
+        Route::post('memory-leak/reset', function () {
+            IntentionalMemoryLeakProbe::reset();
+
+            return response()->json(['reset' => true]);
+        });
+
+        Route::get('memory-leak', function (Request $request, IntentionalMemoryLeakProbe $probe) {
+            return response()->json($probe->grow((int) $request->query('kb', 64)));
+        });
 
     });
 }
