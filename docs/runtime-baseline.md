@@ -44,17 +44,14 @@ curl -i http://127.0.0.1:8000/up
 - Без миграций routes, которые ходят в базу, могут падать или возвращать неожиданный результат.
 
 
-## FPM Bootstrap Comparison
+## Worker Memory Counter
 
 ```bash
-make bootstrap-cost
+curl -X POST http://127.0.0.1:8000/dev/runtime/worker-counter/reset
+curl "http://127.0.0.1:8000/dev/runtime/worker-counter?label=first"
+curl "http://127.0.0.1:8000/dev/runtime/worker-counter?label=second"
 ```
 
-Routes used for comparison:
-
-- `/dev/runtime/light` does almost no application work.
-- `/dev/runtime/products-count` touches the database through Eloquent.
-- `/catalog/cache-summary` goes through application state and cache.
-
-Do not read this as proof that one route is better than another.
-The point is to see that repeated Laravel bootstrap, database work and cache work are different layers.
+Under a long-running worker, the same PHP process can handle multiple requests.
+The counter intentionally uses process memory to make the lifecycle visible.
+This is useful for learning and dangerous for real request-specific data.

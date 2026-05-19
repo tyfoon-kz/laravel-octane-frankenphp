@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
+use App\Support\Runtime\WorkerMemoryCounter;
 
 Route::get('/', function () {
     return response()->json([
@@ -55,6 +56,26 @@ if (app()->environment(['local', 'testing'])) {
             'result' => DB::select('select 1 as ok')[0]->ok ?? 1,
             'pid' => getmypid(),
         ]));
+
+
+        Route::post('worker-counter/reset', function () {
+            WorkerMemoryCounter::reset();
+
+            return response()->json(['reset' => true]);
+        });
+
+        Route::get('worker-counter', function (Request $request, WorkerMemoryCounter $counter) {
+            return response()->json($counter->increment($request->query('label', 'default')));
+        });
+
+
+
+
+
+
+
+
+
     });
 }
 
