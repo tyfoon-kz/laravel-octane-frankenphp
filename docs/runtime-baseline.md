@@ -44,14 +44,12 @@ curl -i http://127.0.0.1:8000/up
 - Без миграций routes, которые ходят в базу, могут падать или возвращать неожиданный результат.
 
 
-## Worker Memory Counter
+## Benchmark Comparison
 
 ```bash
-curl -X POST http://127.0.0.1:8000/dev/runtime/worker-counter/reset
-curl "http://127.0.0.1:8000/dev/runtime/worker-counter?label=first"
-curl "http://127.0.0.1:8000/dev/runtime/worker-counter?label=second"
+make benchmark-baseline
+make benchmark-octane
 ```
 
-Under a long-running worker, the same PHP process can handle multiple requests.
-The counter intentionally uses process memory to make the lifecycle visible.
-This is useful for learning and dangerous for real request-specific data.
+Compare the same route shape under similar local conditions.
+Do not claim that Octane speeds up SQL, external APIs, CPU-heavy work, N+1 queries or lock waits just because a light route became faster.
