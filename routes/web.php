@@ -4,15 +4,15 @@ use App\Http\Controllers\ProductApiController;
 use App\Http\Controllers\ProductAssetController;
 use App\Http\Controllers\ProductPublicationController;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
+use App\Support\Runtime\IntentionalMemoryLeakProbe;
 use App\Support\Runtime\RequestContext;
 use App\Support\Runtime\RequestStateLeakProbe;
 use App\Support\Runtime\TemporaryStreamExample;
 use App\Support\Runtime\WorkerMemoryCounter;
-use App\Support\Runtime\IntentionalMemoryLeakProbe;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return response()->json([
@@ -60,7 +60,6 @@ if (app()->environment(['local', 'testing'])) {
             'pid' => getmypid(),
         ]));
 
-
         Route::post('worker-counter/reset', function () {
             WorkerMemoryCounter::reset();
 
@@ -70,8 +69,6 @@ if (app()->environment(['local', 'testing'])) {
         Route::get('worker-counter', function (Request $request, WorkerMemoryCounter $counter) {
             return response()->json($counter->increment($request->query('label', 'default')));
         });
-
-
 
         Route::post('static-leak/reset', function () {
             RequestStateLeakProbe::reset();
@@ -87,20 +84,14 @@ if (app()->environment(['local', 'testing'])) {
             return response()->json($probe->rememberSafely($marker));
         });
 
-
-
         Route::get('request-context', fn (RequestContext $context) => response()->json([
             'request_id' => $context->requestId(),
             'pid' => getmypid(),
         ]));
 
-
-
         Route::get('temporary-stream', function (Request $request, TemporaryStreamExample $example) {
             return response()->json($example->run($request->boolean('fail')));
         });
-
-
 
         Route::post('memory-leak/reset', function () {
             IntentionalMemoryLeakProbe::reset();
