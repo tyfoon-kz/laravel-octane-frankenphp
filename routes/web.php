@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 use App\Support\Runtime\WorkerMemoryCounter;
+use App\Support\Runtime\RequestStateLeakProbe;
 
 Route::get('/', function () {
     return response()->json([
@@ -69,6 +70,20 @@ if (app()->environment(['local', 'testing'])) {
         });
 
 
+
+        Route::post('static-leak/reset', function () {
+            RequestStateLeakProbe::reset();
+
+            return response()->json(['reset' => true]);
+        });
+
+        Route::get('static-leak/unsafe/{marker?}', function (?string $marker, RequestStateLeakProbe $probe) {
+            return response()->json($probe->rememberUnsafe($marker));
+        });
+
+        Route::get('static-leak/safe/{marker?}', function (?string $marker, RequestStateLeakProbe $probe) {
+            return response()->json($probe->rememberSafely($marker));
+        });
 
 
 
