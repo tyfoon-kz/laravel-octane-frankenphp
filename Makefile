@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -37,3 +37,15 @@ benchmark-baseline: ## Measure baseline HTTP routes before Octane
 
 bootstrap-cost: ## Compare light and database routes in the classic lifecycle
 	bash scripts/benchmark-bootstrap-cost.sh
+
+octane-up: ## Start FrankenPHP/Octane runtime through Docker Compose
+	docker compose -f docker-compose.octane.yml up -d app
+
+octane-down: ## Stop FrankenPHP/Octane runtime
+	docker compose -f docker-compose.octane.yml down
+
+octane-logs: ## Follow FrankenPHP/Octane logs
+	docker compose -f docker-compose.octane.yml logs -f app
+
+octane-reload: ## Reload Octane workers after code or config changes
+	php artisan octane:reload --server=frankenphp
