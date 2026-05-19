@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -56,3 +56,6 @@ octane-watch: ## Start Octane in local watch mode
 front: ## Build frontend assets and reload Octane workers
 	npm run build
 	$(MAKE) octane-reload
+
+race-demo: ## Run local lost update demonstration
+	php scripts/race-demo.php
