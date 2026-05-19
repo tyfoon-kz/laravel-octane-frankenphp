@@ -1,4 +1,4 @@
-.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo locking-demo memory-leak-demo octane-status benchmark-octane
+.PHONY: help install test check qa migrate migrate-status build diff-check benchmark-baseline bootstrap-cost octane-up octane-down octane-logs octane-reload octane-watch front race-demo locking-demo memory-leak-demo octane-status benchmark-octane deploy-smoke
 
 help: ## Show available project commands
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "%-22s %s\n", $$1, $$2}'
@@ -71,3 +71,6 @@ octane-status: ## Show Octane container status and recent logs
 
 benchmark-octane: ## Measure the same routes under Octane runtime
 	bash scripts/benchmark-octane.sh
+
+deploy-smoke: ## Run cheap smoke checks after reload or deploy
+	bash scripts/deploy-smoke.sh

@@ -7,12 +7,18 @@ Octane меняет не Laravel как фреймворк, а жизненны�
 Поэтому production notes должны отвечать не только на вопрос "работает ли endpoint", но и на вопросы про reload, память, соединения, stale state, logs и smoke checks после deploy.
 
 
-## Frontend Build And Runtime Reload
+## Deploy Workflow
+
+Recommended local rehearsal:
 
 ```bash
-make front
+npm run build
+php artisan config:cache
+php artisan route:cache
+make octane-reload
+make deploy-smoke
+make octane-logs
 ```
 
-Vite writes a new manifest and hashed assets.
-A long-running runtime may still hold old application state, cached views or stale assumptions until workers are reloaded.
-The workflow is: build assets, reload/restart workers, then run smoke checks.
+In production this sequence belongs to the deploy process, not to a random manual habit.
+The important parts are explicit build, explicit worker reload or restart, smoke check and logs after the runtime update.
