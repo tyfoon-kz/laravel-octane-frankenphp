@@ -42,3 +42,13 @@ curl -i http://127.0.0.1:8000/up
 - Без установленного `.env` приложение может не стартовать как полноценный web server.
 - Без `npm install` frontend build не сможет собрать Vite assets.
 - Без миграций routes, которые ходят в базу, могут падать или возвращать неожиданный результат.
+
+
+## Baseline Benchmark
+
+```bash
+make benchmark-baseline
+```
+
+The benchmark target measures cheap HTTP routes and one feature-test slice.
+It is intentionally small because the goal is reproducibility before Octane, not a production-grade load test.
